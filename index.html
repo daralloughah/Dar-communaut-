@@ -9,75 +9,33 @@
   <style>
     * { -webkit-tap-highlight-color: transparent; }
     html, body { margin: 0; padding: 0; overflow-x: hidden; }
-    body { 
-      font-family: 'Inter', sans-serif; 
-      background: linear-gradient(135deg, #0f0a1f 0%, #1a0a3a 50%, #0f1a2e 100%);
-      color: #fff;
-      min-height: 100vh;
-    }
-    
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f0a1f 0%, #1a0a3a 50%, #0f1a2e 100%); color: #fff; min-height: 100vh; }
     @keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes slideInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.3)); } 50% { filter: drop-shadow(0 0 20px rgba(99, 102, 241, 0.6)); } }
     @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-    
     .animate-slideInUp { animation: slideInUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .animate-slideInDown { animation: slideInDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .animate-fadeIn { animation: fadeIn 0.8s ease-out; }
     .animate-glow { animation: glow 3s ease-in-out infinite; }
     .animate-float { animation: float 4s ease-in-out infinite; }
-    
-    .glass { 
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    
-    .glass-dark {
-      background: rgba(10, 8, 30, 0.5);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(99, 102, 241, 0.2);
-    }
-    
+    .glass { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); }
+    .glass-dark { background: rgba(10, 8, 30, 0.5); backdrop-filter: blur(16px); border: 1px solid rgba(99, 102, 241, 0.2); }
     .grad-primary { background: linear-gradient(135deg, #6366f1 0%, #10b981 100%); }
     .grad-text { background: linear-gradient(135deg, #6366f1 0%, #10b981 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    
-    input, textarea, select { 
-      background: rgba(255, 255, 255, 0.06) !important;
-      border: 1px solid rgba(255, 255, 255, 0.12) !important;
-      color: #fff !important;
-    }
+    input, textarea, select { background: rgba(255, 255, 255, 0.06) !important; border: 1px solid rgba(255, 255, 255, 0.12) !important; color: #fff !important; }
     input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.4) !important; }
-    input:focus, textarea:focus, select:focus { 
-      outline: none !important;
-      border-color: #6366f1 !important;
-      box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) !important;
-    }
-    
+    input:focus, textarea:focus, select:focus { outline: none !important; border-color: #6366f1 !important; box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) !important; }
     select option { background: #1a0a3a; color: #fff; }
-    
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: rgba(99, 102, 241, 0.05); }
     ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #6366f1, #10b981); border-radius: 3px; }
-    
     .page { display: none; }
     .page.active { display: block; }
-    .modal { display: none; }
+    .modal { display: none; position: fixed; inset: 0; z-index: 50; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
-    
-    .shadow-glow { box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2), 0 0 60px rgba(16, 185, 129, 0.1); }
-    
-    .card-hover {
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-      cursor: pointer;
-    }
-    
-    .card-hover:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3);
-    }
-    
+    .modal-content { background: linear-gradient(135deg, #1a0a3a 0%, #0f1a2e 100%); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 2xl; max-width: 500px; width: 90%; max-height: 90vh; overflow-y-auto; }
+    .card-hover { transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; }
+    .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3); }
     svg { stroke-width: 1.8; }
   </style>
 </head>
@@ -87,7 +45,7 @@
 <div id="toastContainer" class="fixed top-6 right-6 z-50 w-96 max-w-full"></div>
 
 <!-- HEADER -->
-<header id="appHeader" class="glass-dark border-b border-indigo-500/20 sticky top-0 z-30 animate-slideInDown">
+<header class="glass-dark border-b border-indigo-500/20 sticky top-0 z-30 animate-slideInDown">
   <div class="max-w-full mx-auto px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between">
     <div class="flex items-center gap-2 sm:gap-3">
       <div class="w-10 h-10 rounded-lg grad-primary flex items-center justify-center font-bold text-sm">D</div>
@@ -96,46 +54,35 @@
         <p class="text-xs text-emerald-400">Communauté</p>
       </div>
     </div>
-
     <nav id="topNav" class="hidden sm:flex gap-1">
-      <button onclick="switchPage('accueil')" class="nav-tab active px-3 lg:px-4 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/40 glass" data-page="accueil">Pour toi</button>
-      <button onclick="switchPage('annonces')" class="nav-tab px-3 lg:px-4 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="annonces">Annonces</button>
-      <button onclick="switchPage('entraide')" class="nav-tab px-3 lg:px-4 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="entraide">Entraide</button>
-      <button onclick="switchPage('formations')" class="nav-tab px-3 lg:px-4 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="formations">Formations</button>
-      <button onclick="switchPage('favoris')" class="nav-tab px-3 lg:px-4 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="favoris">Favoris</button>
+      <button onclick="switchPage('accueil')" class="nav-tab active px-3 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/40 glass" data-page="accueil">Pour toi</button>
+      <button onclick="switchPage('annonces')" class="nav-tab px-3 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="annonces">Annonces</button>
+      <button onclick="switchPage('entraide')" class="nav-tab px-3 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="entraide">Entraide</button>
+      <button onclick="switchPage('formations')" class="nav-tab px-3 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="formations">Formations</button>
+      <button onclick="switchPage('favoris')" class="nav-tab px-3 py-2 rounded-lg text-sm font-600 transition-all border border-indigo-500/20 hover:border-indigo-500/40" data-page="favoris">Favoris</button>
     </nav>
-
     <div class="flex items-center gap-2 sm:gap-3">
-      <button id="searchBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all" onclick="openModal('searchModal')">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-        </svg>
+      <button onclick="openModal('searchModal')" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </button>
-      <button id="notificationBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all relative" onclick="openModal('notificationsModal')">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-        </svg>
-        <span class="absolute top-1 right-1 w-2 h-2 bg-emerald-400 rounded-full notif-badge"></span>
+      <button onclick="openModal('notificationsModal')" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all relative">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span class="absolute top-1 right-1 w-2 h-2 bg-emerald-400 rounded-full"></span>
       </button>
-      <button id="profileBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all" onclick="switchPage('profil')">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-        </svg>
+      <button onclick="switchPage('profil')" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
       </button>
-      <button id="settingsBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all" onclick="openModal('settingsModal')">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
+      <button onclick="openModal('settingsModal')" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/></svg>
       </button>
     </div>
   </div>
 </header>
 
 <!-- MAIN CONTENT -->
-<main id="appMain" class="w-full overflow-x-hidden">
+<main class="w-full overflow-x-hidden">
 
-  <!-- PAGE 1: ACCUEIL -->
+  <!-- PAGE: ACCUEIL -->
   <div id="page-accueil" class="page active px-4 sm:px-6 py-6 max-w-3xl mx-auto space-y-6">
     <div class="glass-dark rounded-2xl p-4 sm:p-6 border border-indigo-500/20">
       <div class="flex items-start gap-3 sm:gap-4">
@@ -144,24 +91,20 @@
           <textarea id="composerText" placeholder="Partager un moment..." class="w-full rounded-xl px-4 py-3 text-sm resize-none h-24"></textarea>
           <div class="flex gap-3 justify-end">
             <button onclick="document.getElementById('composerText').value=''" class="px-4 py-2 rounded-lg text-sm font-600 hover:bg-indigo-500/10 transition-all">Annuler</button>
-            <button onclick="app.createPost()" class="px-6 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform shadow-glow">Publier</button>
+            <button onclick="if(window.app) app.createPost()" class="px-6 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform">Publier</button>
           </div>
         </div>
       </div>
     </div>
-
-    <div id="feedContainer" class="space-y-6">
-      <!-- Posts dynamiques -->
-    </div>
+    <div id="feedContainer" class="space-y-6 animate-slideInUp"></div>
   </div>
 
-  <!-- PAGE 2: ANNONCES -->
+  <!-- PAGE: ANNONCES -->
   <div id="page-annonces" class="page px-4 sm:px-6 py-6 max-w-5xl mx-auto space-y-6">
     <div class="flex items-center justify-between flex-wrap gap-3">
       <h2 class="text-2xl font-bold font-outfit">Annonces</h2>
-      <button onclick="openModal('createAnnonceModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform shadow-glow">+ Créer</button>
+      <button onclick="openModal('createAnnonceModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform">+ Créer</button>
     </div>
-    
     <div class="flex gap-2 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
       <button class="annonce-filter active px-4 py-2 rounded-full text-sm font-bold glass grad-primary whitespace-nowrap" data-filter="all">Tous</button>
       <button class="annonce-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="prof">Je suis prof</button>
@@ -169,31 +112,24 @@
       <button class="annonce-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="correspondant">Correspondant</button>
       <button class="annonce-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="zawaj">Zawaj</button>
     </div>
-
-    <div id="annoncesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-      <!-- Annonces dynamiques -->
-    </div>
+    <div id="annoncesContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
   </div>
 
-  <!-- PAGE 3: ENTRAIDE -->
+  <!-- PAGE: ENTRAIDE -->
   <div id="page-entraide" class="page px-4 sm:px-6 py-6 max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between flex-wrap gap-3">
       <h2 class="text-2xl font-bold font-outfit">Entraide & Solidarité</h2>
-      <button onclick="openModal('createAidModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform shadow-glow">+ Demander</button>
+      <button onclick="openModal('createAidModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform">+ Demander</button>
     </div>
-    
-    <div id="aidContainer" class="space-y-4">
-      <!-- Demandes d'aide dynamiques -->
-    </div>
+    <div id="aidContainer" class="space-y-4"></div>
   </div>
 
-  <!-- PAGE 4: FORMATIONS -->
+  <!-- PAGE: FORMATIONS -->
   <div id="page-formations" class="page px-4 sm:px-6 py-6 max-w-5xl mx-auto space-y-6">
     <div class="flex items-center justify-between flex-wrap gap-3">
       <h2 class="text-2xl font-bold font-outfit">Formations & Cours</h2>
-      <button onclick="openModal('createFormationModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform shadow-glow">+ Créer</button>
+      <button onclick="openModal('createFormationModal')" class="px-4 py-2 rounded-lg grad-primary text-sm font-bold hover:scale-105 transition-transform">+ Créer</button>
     </div>
-    
     <div class="flex gap-2 overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
       <button class="formation-filter active px-4 py-2 rounded-full text-sm font-bold glass grad-primary whitespace-nowrap" data-filter="all">Tous</button>
       <button class="formation-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="arabe">Arabe</button>
@@ -201,73 +137,48 @@
       <button class="formation-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="hadith">Hadith</button>
       <button class="formation-filter px-4 py-2 rounded-full text-sm font-bold glass whitespace-nowrap" data-filter="fiqh">Fiqh</button>
     </div>
-
-    <div id="formationsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-      <!-- Formations dynamiques -->
-    </div>
+    <div id="formationsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
   </div>
 
-  <!-- PAGE 5: FAVORIS -->
+  <!-- PAGE: FAVORIS -->
   <div id="page-favoris" class="page px-4 sm:px-6 py-6 max-w-3xl mx-auto space-y-6">
     <h2 class="text-2xl font-bold font-outfit">Mes Favoris</h2>
-    <div id="favorisContainer" class="space-y-4">
-      <!-- Favoris dynamiques -->
-    </div>
+    <div id="favorisContainer" class="space-y-4"></div>
   </div>
 
-  <!-- PAGE 6: MON PROFIL -->
+  <!-- PAGE: PROFIL -->
   <div id="page-profil" class="page px-4 sm:px-6 py-6 max-w-3xl mx-auto space-y-6">
     <div class="glass-dark rounded-2xl p-6 border border-emerald-500/20">
       <div class="h-32 bg-gradient-to-r from-indigo-600 to-emerald-600 rounded-2xl -mx-6 -mt-6 mb-6"></div>
-      
       <div class="flex items-end gap-4 mb-6 flex-wrap">
         <div class="w-20 h-20 rounded-2xl grad-primary flex items-center justify-center font-bold text-3xl border-4 border-indigo-950 animate-glow -mt-12" id="profileAvatar">AY</div>
         <div class="flex-1">
-          <h2 class="text-2xl font-bold" id="profileName">Abdallah Youssef</h2>
-          <p class="text-sm text-emerald-400" id="profileHandle">@abdallah.youssef</p>
+          <h2 class="text-2xl font-bold" id="profileName">Utilisateur</h2>
+          <p class="text-sm text-emerald-400" id="profileHandle">@user</p>
         </div>
         <button onclick="openModal('editProfileModal')" class="px-4 py-2 rounded-lg glass hover:bg-indigo-500/10 text-sm font-bold">Éditer</button>
       </div>
-
       <div class="grid grid-cols-4 gap-3 mb-6">
         <div class="glass rounded-lg p-3 text-center">
-          <div class="text-lg font-bold grad-text" id="profileLevel">12</div>
+          <div class="text-lg font-bold grad-text" id="profileLevel">1</div>
           <div class="text-xs text-gray-300">Niveau</div>
         </div>
         <div class="glass rounded-lg p-3 text-center">
-          <div class="text-lg font-bold text-emerald-400" id="profileXP">2450</div>
+          <div class="text-lg font-bold text-emerald-400" id="profileXP">0</div>
           <div class="text-xs text-gray-300">XP</div>
         </div>
         <div class="glass rounded-lg p-3 text-center">
-          <div class="text-lg font-bold text-orange-400" id="profileStreak">7</div>
+          <div class="text-lg font-bold text-orange-400" id="profileStreak">0</div>
           <div class="text-xs text-gray-300">Streak</div>
         </div>
         <div class="glass rounded-lg p-3 text-center">
-          <div class="text-lg font-bold text-blue-400" id="profileBadges">5</div>
+          <div class="text-lg font-bold text-blue-400" id="profileBadges">0</div>
           <div class="text-xs text-gray-300">Badges</div>
         </div>
       </div>
-
       <div class="space-y-2">
         <h3 class="text-sm font-bold uppercase text-emerald-400">Bio</h3>
-        <p class="text-sm text-gray-300 leading-relaxed" id="profileBio">Passionné par l'arabe classique et la communauté musulmane.</p>
-      </div>
-    </div>
-
-    <div class="glass-dark rounded-2xl p-6 border border-indigo-500/20">
-      <h3 class="font-bold mb-4">Mes Badges</h3>
-      <div class="grid grid-cols-4 gap-4" id="badgesContainer">
-        <div class="glass rounded-lg p-3 text-center hover:scale-110 transition-transform cursor-pointer">
-          <span class="text-2xl">🏆</span>
-          <p class="text-xs mt-1 text-gray-300">Leader</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="glass-dark rounded-2xl p-6 border border-indigo-500/20">
-      <h3 class="font-bold mb-4">Mes Publications</h3>
-      <div id="myPostsContainer" class="space-y-4">
-        <!-- Utilisateur's posts dynamique -->
+        <p class="text-sm text-gray-300 leading-relaxed" id="profileBio">Pas de bio</p>
       </div>
     </div>
   </div>
@@ -282,81 +193,196 @@
       <span class="text-xs">Accueil</span>
     </button>
     <button onclick="switchPage('annonces')" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all" data-page="annonces">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.961 1.961 0 01-.5-.441l-9.8-9.8a1.969 1.969 0 010-2.783c.94-.935 2.427-.935 3.368 0l5.211 5.211a.75.75 0 001.06 0l5.211-5.211c.94-.935 2.427-.935 3.368 0a1.969 1.969 0 010 2.782l-9.8 9.8a1.969 1.969 0 01-.5.441m0-15.338a1.968 1.968 0 00-.5-.441m0 15.338a1.968 1.968 0 01-.5-.441m15.338-5.197a2.048 2.048 0 001.326-.446l9.852-9.852a3.582 3.582 0 00-5.064-5.064l-10.831 10.832a3.582 3.582 0 005.064 5.064l9.801-9.8a1.018 1.018 0 00-1.44-1.44z"/></svg>
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v11l4-4h1a2 2 0 012 2z"/></svg>
       <span class="text-xs">Annonces</span>
-    </button>
-    <button onclick="switchPage('entraide')" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all" data-page="entraide">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-      <span class="text-xs">Entraide</span>
     </button>
     <button onclick="switchPage('formations')" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all" data-page="formations">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17.25c0 5.25 3.07 9.75 10 13.014.985.21 2.945.21 3.898 0C19.94 27 23 22.5 23 17.25c0-6.252-4.5-11-11-11.247z"/></svg>
       <span class="text-xs">Formations</span>
     </button>
-    <button onclick="toggleChat()" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all" id="chatMobileBtn">
+    <button onclick="switchPage('profil')" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all" data-page="profil">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <span class="text-xs">Profil</span>
+    </button>
+    <button onclick="toggleChat()" class="nav-mobile-btn flex flex-col items-center gap-1 py-2 px-3 rounded-lg transition-all">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       <span class="text-xs">Chat</span>
     </button>
   </div>
 </nav>
 
-<!-- CHAT SIDEBAR -->
-<div id="chatContainer" class="fixed bottom-0 left-0 right-0 glass-dark border-t border-indigo-500/20 sm:fixed sm:bottom-6 sm:right-6 sm:left-auto sm:w-96 sm:rounded-t-2xl sm:border-b sm:border-l sm:border-r hidden sm:flex flex-col h-96 sm:h-[calc(100vh-200px)] z-40 overflow-hidden">
-  <div class="border-b border-indigo-500/20 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between flex-shrink-0">
-    <h3 class="font-bold text-sm sm:text-lg">Messages</h3>
-    <div class="flex gap-2">
-      <button id="callBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all" title="Appel audio">
-        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 00.948.684l1.498 4.493a1 1 0 00.502.684l2.252 1.084a11 11 0 01-5.458 5.772 1 1 0 00-.502.984l.122 1.252a1 1 0 00.97.972h.191a10 10 0 0010-10V5a2 2 0 00-2-2h-2.28a1 1 0 00-.948.684l-1.498-4.493a1 1 0 00-.502-.684L7.432 2.5a11 11 0 015.458-5.772 1 1 0 00.502-.984L12.31.75a1 1 0 00-.97-.972h-.191a10 10 0 00-10 10z"/></svg>
-      </button>
-      <button id="videoBtn" class="p-2 hover:bg-indigo-500/10 rounded-lg transition-all" title="Appel vidéo">
-        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-      </button>
+<!-- MODALES -->
+
+<!-- MODAL: LOGIN -->
+<div id="loginModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Se connecter</h2>
+    <input type="email" id="loginEmail" placeholder="Email" class="w-full rounded-lg px-4 py-2">
+    <input type="password" id="loginPassword" placeholder="Mot de passe" class="w-full rounded-lg px-4 py-2">
+    <button onclick="if(window.app) app.handleLogin()" class="w-full grad-primary rounded-lg py-2 font-bold hover:scale-105 transition-transform">Connexion</button>
+    <p class="text-center text-sm text-gray-400">Pas de compte ? <button onclick="switchModal('loginModal', 'registerModal')" class="text-emerald-400 hover:underline">Créer</button></p>
+  </div>
+</div>
+
+<!-- MODAL: REGISTER -->
+<div id="registerModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Créer un compte</h2>
+    <input type="text" id="registerName" placeholder="Nom complet" class="w-full rounded-lg px-4 py-2">
+    <input type="email" id="registerEmail" placeholder="Email" class="w-full rounded-lg px-4 py-2">
+    <input type="password" id="registerPassword" placeholder="Mot de passe" class="w-full rounded-lg px-4 py-2">
+    <input type="password" id="registerPasswordConfirm" placeholder="Confirmer le mot de passe" class="w-full rounded-lg px-4 py-2">
+    <button onclick="if(window.app) app.handleRegister()" class="w-full grad-primary rounded-lg py-2 font-bold hover:scale-105 transition-transform">S'inscrire</button>
+    <p class="text-center text-sm text-gray-400">Déjà inscrit ? <button onclick="switchModal('registerModal', 'loginModal')" class="text-emerald-400 hover:underline">Connexion</button></p>
+  </div>
+</div>
+
+<!-- MODAL: CREATE ANNONCE -->
+<div id="createAnnonceModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Créer une annonce</h2>
+    <select id="annonceType" class="w-full rounded-lg px-4 py-2">
+      <option value="">Type d'annonce</option>
+      <option value="prof">Je suis prof</option>
+      <option value="cherche">Cherche prof</option>
+      <option value="correspondant">Correspondant</option>
+      <option value="zawaj">Zawaj</option>
+    </select>
+    <input type="text" id="annonceTitle" placeholder="Titre" class="w-full rounded-lg px-4 py-2">
+    <textarea id="annonceDesc" placeholder="Description..." class="w-full rounded-lg px-4 py-2 h-24 resize-none"></textarea>
+    <input type="text" id="annonceLocation" placeholder="Localisation" class="w-full rounded-lg px-4 py-2">
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('createAnnonceModal')" class="px-4 py-2 rounded-lg glass hover:bg-indigo-500/10">Annuler</button>
+      <button onclick="if(window.app) app.handleCreateAnnonce()" class="px-6 py-2 rounded-lg grad-primary font-bold hover:scale-105 transition-transform">Créer</button>
     </div>
   </div>
+</div>
 
-  <div id="chatBox" class="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-4 flex flex-col">
-    <!-- Messages dynamiques -->
+<!-- MODAL: CREATE FORMATION -->
+<div id="createFormationModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Créer une formation</h2>
+    <input type="text" id="formationTitle" placeholder="Titre du cours" class="w-full rounded-lg px-4 py-2">
+    <select id="formationCategory" class="w-full rounded-lg px-4 py-2">
+      <option value="">Catégorie</option>
+      <option value="arabe">Arabe</option>
+      <option value="quran">Quran</option>
+      <option value="hadith">Hadith</option>
+      <option value="fiqh">Fiqh</option>
+    </select>
+    <textarea id="formationDesc" placeholder="Description..." class="w-full rounded-lg px-4 py-2 h-24 resize-none"></textarea>
+    <input type="number" id="formationPrice" placeholder="Prix (€)" class="w-full rounded-lg px-4 py-2">
+    <input type="number" id="formationHours" placeholder="Durée (heures)" class="w-full rounded-lg px-4 py-2">
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('createFormationModal')" class="px-4 py-2 rounded-lg glass hover:bg-indigo-500/10">Annuler</button>
+      <button onclick="if(window.app) app.handleCreateFormation()" class="px-6 py-2 rounded-lg grad-primary font-bold hover:scale-105 transition-transform">Créer</button>
+    </div>
   </div>
+</div>
 
-  <div class="border-t border-indigo-500/20 px-4 sm:px-6 py-3 sm:py-4 flex gap-2 sm:gap-3 flex-shrink-0">
-    <input type="text" id="msgInput" placeholder="Message…" class="flex-1 rounded-full px-4 py-2 text-xs sm:text-sm focus:ring-2 ring-emerald-500/50"/>
-    <button id="sendBtn" onclick="app.sendMessage()" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full grad-primary flex items-center justify-center font-bold hover:scale-110 transition-transform shadow-glow flex-shrink-0">
-      <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 L4.13399899,1.16582705 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5951061 3.19218622,10.7522035 3.50612381,10.7522035 L16.6915026,11.5376905 C16.6915026,11.5376905 17.1624089,11.5376905 17.1624089,12.0089827 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z"/></svg>
+<!-- MODAL: CREATE AID -->
+<div id="createAidModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Demander de l'aide</h2>
+    <input type="text" id="aidTitle" placeholder="Titre de la demande" class="w-full rounded-lg px-4 py-2">
+    <textarea id="aidDesc" placeholder="Décrivez votre besoin..." class="w-full rounded-lg px-4 py-2 h-24 resize-none"></textarea>
+    <select id="aidUrgency" class="w-full rounded-lg px-4 py-2">
+      <option value="normal">Normal</option>
+      <option value="urgent">Urgent</option>
+      <option value="tres-urgent">Très urgent</option>
+    </select>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('createAidModal')" class="px-4 py-2 rounded-lg glass hover:bg-indigo-500/10">Annuler</button>
+      <button onclick="if(window.app) app.handleCreateAid()" class="px-6 py-2 rounded-lg grad-primary font-bold hover:scale-105 transition-transform">Demander</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT PROFILE -->
+<div id="editProfileModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Éditer profil</h2>
+    <input type="text" id="editName" placeholder="Nom" class="w-full rounded-lg px-4 py-2">
+    <textarea id="editBio" placeholder="Bio (max 500 caractères)" class="w-full rounded-lg px-4 py-2 h-20 resize-none"></textarea>
+    <input type="text" id="editCountry" placeholder="Pays" class="w-full rounded-lg px-4 py-2">
+    <input type="text" id="editCity" placeholder="Ville" class="w-full rounded-lg px-4 py-2">
+    <select id="editGender" class="w-full rounded-lg px-4 py-2">
+      <option value="">Genre</option>
+      <option value="male">Homme</option>
+      <option value="female">Femme</option>
+    </select>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('editProfileModal')" class="px-4 py-2 rounded-lg glass hover:bg-indigo-500/10">Annuler</button>
+      <button onclick="if(window.app) app.handleEditProfile()" class="px-6 py-2 rounded-lg grad-primary font-bold hover:scale-105 transition-transform">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: SEARCH -->
+<div id="searchModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp">
+    <h2 class="text-2xl font-bold font-outfit">Rechercher</h2>
+    <input type="text" id="searchInput" placeholder="Rechercher..." class="w-full rounded-lg px-4 py-2" oninput="if(window.app) app.handleSearch()">
+    <div id="searchResults" class="space-y-2 max-h-96 overflow-y-auto"></div>
+  </div>
+</div>
+
+<!-- MODAL: NOTIFICATIONS -->
+<div id="notificationsModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp max-w-md">
+    <h2 class="text-2xl font-bold font-outfit">Notifications</h2>
+    <div id="notificationsContainer" class="space-y-2 max-h-96 overflow-y-auto">
+      <p class="text-gray-400 text-sm">Aucune notification</p>
+    </div>
+    <button onclick="closeModal('notificationsModal')" class="w-full py-2 rounded-lg glass hover:bg-indigo-500/10">Fermer</button>
+  </div>
+</div>
+
+<!-- MODAL: SETTINGS -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content p-6 space-y-4 animate-slideInUp max-w-md">
+    <h2 class="text-2xl font-bold font-outfit">Paramètres</h2>
+    <button onclick="if(window.auth) auth.signOut(); closeModal('settingsModal')" class="w-full py-2 rounded-lg glass hover:bg-red-500/10 text-red-400 font-bold">Se déconnecter</button>
+    <button onclick="closeModal('settingsModal')" class="w-full py-2 rounded-lg glass hover:bg-indigo-500/10">Fermer</button>
+  </div>
+</div>
+
+<!-- CHAT SIDEBAR -->
+<div id="chatContainer" class="fixed bottom-0 left-0 right-0 glass-dark border-t border-indigo-500/20 sm:fixed sm:bottom-6 sm:right-6 sm:left-auto sm:w-96 sm:rounded-t-2xl sm:border-b sm:border-l sm:border-r hidden sm:flex flex-col h-96 sm:h-[calc(100vh-200px)] z-40 overflow-hidden">
+  <div class="border-b border-indigo-500/20 px-4 py-3 flex items-center justify-between flex-shrink-0">
+    <h3 class="font-bold">Messages</h3>
+    <button onclick="toggleChat()" class="p-2 hover:bg-indigo-500/10 rounded-lg">✕</button>
+  </div>
+  <div id="chatBox" class="flex-1 overflow-y-auto px-4 py-4 space-y-4 flex flex-col"></div>
+  <div class="border-t border-indigo-500/20 px-4 py-3 flex gap-2 flex-shrink-0">
+    <input type="text" id="msgInput" placeholder="Message…" class="flex-1 rounded-full px-4 py-2 text-sm"/>
+    <button id="sendBtn" onclick="if(window.app) app.sendMessage()" class="w-10 h-10 rounded-full grad-primary flex items-center justify-center font-bold hover:scale-110 transition-transform flex-shrink-0">
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M16.6915026,12.4744748 L3.50612381,13.2599618 C3.19218622,13.2599618 3.03521743,13.4170592 3.03521743,13.5741566 L1.15159189,20.0151496 C0.8376543,20.8006365 0.99,21.89 1.77946707,22.52 C2.41,22.99 3.50612381,23.1 4.13399899,22.8429026 L21.714504,14.0454487 C22.6563168,13.5741566 23.1272231,12.6315722 22.9702544,11.6889879 L4.13399899,1.16582705 C3.34915502,0.9 2.40734225,1.00636533 1.77946707,1.4776575 C0.994623095,2.10604706 0.837654326,3.0486314 1.15159189,3.99701575 L3.03521743,10.4380088 C3.03521743,10.5951061 3.19218622,10.7522035 3.50612381,10.7522035 L16.6915026,11.5376905 C16.6915026,11.5376905 17.1624089,11.5376905 17.1624089,12.0089827 C17.1624089,12.4744748 16.6915026,12.4744748 16.6915026,12.4744748 Z"/></svg>
     </button>
   </div>
 </div>
 
-<!-- CHAT OVERLAY MOBILE -->
 <div id="chatOverlay" class="hidden fixed inset-0 bg-black/50 z-30 sm:hidden" onclick="toggleChat()"></div>
 
-<!-- MODALS (LOGIN, REGISTER, CRÉER ANNONCE, etc) -->
-<!-- [Modales identiques au HTML précédent - je les coupe pour la longueur] -->
-<!-- TODO: Ajouter toutes les modales (login, register, createAnnonce, createFormation, etc) -->
-
-<!-- ======================== SCRIPTS ======================== -->
-<!-- Import order is CRITICAL -->
+<!-- SCRIPTS -->
 <script src="js/constants.js" defer></script>
 <script src="js/utils.js" defer></script>
 <script src="js/storage.js" defer></script>
 <script src="js/auth.js" defer></script>
 <script src="js/main.js" defer></script>
 
-<!-- GLOBAL FUNCTIONS (Page switching, modals, chat) -->
 <script>
   function switchPage(pageName) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(`page-${pageName}`)?.classList.add('active');
-    
     document.querySelectorAll('[data-page]').forEach(btn => {
       btn.classList.remove('active', 'border-indigo-500/40', 'glass');
       if (btn.dataset.page === pageName) btn.classList.add('active', 'border-indigo-500/40', 'glass');
     });
-
     document.querySelectorAll('.nav-mobile-btn').forEach(btn => {
       btn.classList.remove('active', 'text-emerald-400');
       if (btn.dataset.page === pageName) btn.classList.add('active', 'text-emerald-400');
     });
-
     if (pageName === 'profil' && window.app) window.app.loadProfile();
   }
 
@@ -378,7 +404,29 @@
     document.getElementById('chatOverlay')?.classList.toggle('hidden');
   }
 
-  console.log('✅ Global functions loaded');
+  // Filter events
+  document.querySelectorAll('.annonce-filter').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.annonce-filter').forEach(b => b.classList.remove('active', 'grad-primary'));
+      e.target.classList.add('active', 'grad-primary');
+      if(window.app) app.loadAnnonces();
+    });
+  });
+
+  document.querySelectorAll('.formation-filter').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('.formation-filter').forEach(b => b.classList.remove('active', 'grad-primary'));
+      e.target.classList.add('active', 'grad-primary');
+      if(window.app) app.loadFormations();
+    });
+  });
+
+  // Check if user is logged in on load
+  window.addEventListener('DOMContentLoaded', () => {
+    if (window.auth && !window.auth.isLoggedIn()) {
+      openModal('loginModal');
+    }
+  });
 </script>
 
 </body>
