@@ -34,39 +34,47 @@ const app = {
   },
 
   async handleRegister() {
+    alert('🔵 Inscription en cours...');
     const name = document.getElementById('registerName')?.value;
     const email = document.getElementById('registerEmail')?.value;
     const password = document.getElementById('registerPassword')?.value;
     const confirm = document.getElementById('registerPasswordConfirm')?.value;
 
     if (!name || !email || !password || !confirm) {
+      alert('⚠️ Remplissez TOUS les champs!');
       showToast('Remplissez tous les champs', 'warning');
       return;
     }
 
     if (!validateEmail(email)) {
+      alert(`⚠️ Email invalide: ${email}`);
       showToast('Email invalide', 'error');
       return;
     }
 
     if (!validatePassword(password)) {
+      alert('⚠️ Mot de passe: minimum 6 caractères');
       showToast('Minimum 6 caractères', 'error');
       return;
     }
 
     if (password !== confirm) {
+      alert('⚠️ Les mots de passe ne correspondent pas');
       showToast('Mots de passe non identiques', 'error');
       return;
     }
 
     try {
+      alert('⏳ Appel auth.signUp...');
       showToast('Inscription en cours...', 'info');
       await auth.signUp(email, password, name);
+      alert('✅✅✅ COMPTE CRÉÉ! ✅✅✅');
       showToast('Compte créé !', 'success');
       closeModal('registerModal');
       this.updateUI();
       await this.loadFeed();
     } catch (error) {
+      alert(`💥 ERREUR: ${error.message}`);
       showToast(error.message || 'Erreur inscription', 'error');
     }
   },
