@@ -120,4 +120,7 @@ class AuthManager {
 // Initialize Auth Manager
 const auth = new AuthManager();
 
+// ⚠️ CRITICAL: Export to window
+window.auth = auth;
+
 console.log('✅ Auth Manager initialized');
