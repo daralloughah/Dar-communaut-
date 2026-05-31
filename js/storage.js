@@ -37,29 +37,38 @@ class SupabaseClient {
 
   // AUTH - Sign Up
   async signUp(email, password, name) {
-    const url = `${this.url}/auth/v1/signup`;
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': this.anonKey,
-      },
-      body: JSON.stringify({ email, password }),
-    };
+    try {
+      const url = `${this.url}/auth/v1/signup`;
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': this.anonKey,
+        },
+        body: JSON.stringify({ email, password }),
+      };
 
-    const response = await fetch(url, options);
-    const data = await response.json();
+      const response = await fetch(url, options);
+      const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.message || 'Erreur inscription');
+      if (!response.ok) {
+        alert(`❌ Erreur signup: ${data.message || data.error || 'Erreur inconnue'}`);
+        throw new Error(data.message || data.error || 'Erreur inscription');
+      }
+
+      alert('✅ Signup OK! Création profil...');
+
+      // Créer le profil utilisateur
+      if (data.user) {
+        await this.createUserProfile(data.user.id, email, name);
+        alert('✅ Profil créé!');
+      }
+
+      return data;
+    } catch (error) {
+      alert(`💥 SignUp ERROR: ${error.message}`);
+      throw error;
     }
-
-    // Créer le profil utilisateur
-    if (data.user) {
-      await this.createUserProfile(data.user.id, email, name);
-    }
-
-    return data;
   }
 
   // AUTH - Sign In
@@ -107,16 +116,24 @@ class SupabaseClient {
 
   // USER PROFILE
   async createUserProfile(userId, email, name) {
-    return this.request('POST', '/users', {
-      id: userId,
-      email,
-      name,
-      avatar: name.substring(0, 2).toUpperCase(),
-      bio: '',
-      level: 1,
-      xp: 0,
-      streak: 0,
-    });
+    try {
+      alert(`📝 Création profil pour ${email}...`);
+      const result = await this.request('POST', '/users', {
+        id: userId,
+        email,
+        name,
+        avatar: name.substring(0, 2).toUpperCase(),
+        bio: '',
+        level: 1,
+        xp: 0,
+        streak: 0,
+      });
+      alert(`✅ Profil créé!`);
+      return result;
+    } catch (error) {
+      alert(`❌ Erreur création profil: ${error.message}`);
+      throw error;
+    }
   }
 
   async getUserProfile(userId) {
