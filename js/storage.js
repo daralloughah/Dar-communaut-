@@ -287,4 +287,7 @@ const supabase = new SupabaseClient(
   SUPABASE_CONFIG.ANON_KEY
 );
 
+// ⚠️ CRITICAL: Export to window
+window.supabase = supabase;
+
 console.log('✅ Storage (Supabase) initialized');
