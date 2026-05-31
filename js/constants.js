@@ -21,6 +21,14 @@ const COLORS = {
   gold: '#D4AF37',
 };
 
+// ======================== TOAST TYPES ========================
+const TOAST_TYPES = {
+  success: { icon: '✅', color: 'text-emerald-400' },
+  error: { icon: '❌', color: 'text-red-400' },
+  warning: { icon: '⚠️', color: 'text-yellow-400' },
+  info: { icon: 'ℹ️', color: 'text-blue-400' },
+};
+
 // ======================== ANNONCE TYPES ========================
 const ANNONCE_TYPES = {
   prof: 'Je suis prof',
@@ -35,6 +43,15 @@ const FORMATION_CATEGORIES = {
   quran: 'Quran',
   hadith: 'Hadith',
   fiqh: 'Fiqh',
+};
+
+// ======================== USER BADGES ========================
+const USER_BADGES = {
+  newbie: { icon: '🌟', label: 'Nouveau' },
+  helper: { icon: '🤝', label: 'Aidant' },
+  teacher: { icon: '👨‍🏫', label: 'Enseignant' },
+  streak7: { icon: '🔥', label: 'Streak 7j' },
+  streak30: { icon: '🌪️', label: 'Streak 30j' },
 };
 
 console.log('✅ Constants loaded');
