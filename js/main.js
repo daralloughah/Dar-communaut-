@@ -522,7 +522,12 @@ const app = {
   }
 };
 
+// ⚠️ CRITICAL: Export app to window so HTML can access it
+window.app = app;
+
 // Start app
 document.addEventListener('DOMContentLoaded', () => {
+  alert('🔵 APP STARTING...');
   app.init();
+  alert('✅ APP READY!');
 });
