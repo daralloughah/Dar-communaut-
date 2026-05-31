@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Dar Al Loughah — Communauté</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;600;700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════
+   VARIABLES & RESET
+═══════════════════════════════════════ */
+:root {
+  --bg:          #071810;
+  --bg2:         #0a2014;
+  --card:        #0d2b18;
+  --card2:       #112e1c;
+  --input-bg:    #0f2819;
+  --em:          #0F4C3A;
+  --em-btn:      #1a5c40;
+  --em-light:    #1e6b4a;
+  --gold:        #D4AF37;
+  --gold-lt:     #E8C94A;
+  --gold-dk:     #A8890A;
+  --gold-dim:    rgba(212,175,55,.14);
+  --gold-bdr:    rgba(212,175,55,.22);
+  --text:        #f0efe8;
+  --text2:       rgba(240,239,232,.7);
+  --text3:       rgba(240,239,232,.38);
+  --red:         #e53e3e;
+  --green:       #22c55e;
+  --r:           14px;
+  --r-sm:        8px;
+  --r-full:      999px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{width:100%;height:100%;overflow:hidden;background:#040d08;font-family:'Nunito',sans-serif;color:var(--text);font-size:15px;}
+button{font-family:'Nunito',sans-serif;}
+
+/* ═══════════════════════════════════════
+   APP SHELL
+═══════════════════════════════════════ */
+#app{
+  position:relative;width:100%;height:100%;
+  max-width:430px;margin:0 auto;
+  background:var(--bg);
+  overflow:hidden;display:flex;flex-direction:column;
+}
+
+/* ═══════════════════════════════════════
+   HEADER
+═══════════════════════════════════════ */
+.hdr{
+  flex-shrink:0;
+  background:linear-gradient(180deg,#0b2619 0%,var(--bg) 100%);
+  border-bottom:1px solid var(--gold-bdr);
+  padding:12px 14px;
+  padding-top:max(14px,env(safe-area-inset-top));
+  display:flex;align-items:center;gap:10px;
+  z-index:50;position:relative;
+}
+.hdr-logo{display:flex;align-items:center;gap:7px;flex:1;min-width:0;}
+.hdr-logo .moon{font-size:18px;}
+.hdr-logo-txt{display:flex;flex-direction:column;}
+.hdr-logo-main{font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:var(--gold);line-height:1.15;white-space:nowrap;}
+.hdr-logo-sub{font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;}
+.hdr-actions{display:flex;align-items:center;gap:4px;}
+.hdr-btn{
+  position:relative;width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--r-full);border:none;background:transparent;
+  cursor:pointer;font-size:19px;color:var(--text2);transition:background .15s;
+}
+.hdr-btn:active{background:var(--gold-dim);}
+.badge{
+  position:absolute;top:1px;right:1px;
+  min-width:16px;height:16px;
+  background:var(--red);border-radius:var(--r-full);
+  font-size:9px;font-weight:800;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  padding:0 3px;border:1.5px solid var(--bg);
+}
+.hdr-avatar{
+  width:34px;height:34px;border-radius:var(--r-full);
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:12px;color:var(--gold);
+  cursor:pointer;position:relative;
+}
+.hdr-avatar .dot-online{
+  position:absolute;bottom:0;right:0;width:9px;height:9px;
+  background:var(--green);border-radius:var(--r-full);border:1.5px solid var(--bg);
+}
+.hdr-menu-btn{
+  background:none;border:none;color:var(--text2);
+  font-size:20px;cursor:pointer;padding:4px 6px 4px 0;line-height:1;
+}
+
+/* ═══════════════════════════════════════
+   SCREEN SYSTEM
+═══════════════════════════════════════ */
+.screens{flex:1;overflow:hidden;position:relative;}
+.screen{
+  position:absolute;inset:0;
+  overflow-y:auto;overflow-x:hidden;
+  display:none;flex-direction:column;
+  padding-bottom:72px;
+  scrollbar-width:none;
+}
+.screen::-webkit-scrollbar{display:none;}
+.screen.active{display:flex;}
+
+/* ═══════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════ */
+.bnav{
+  flex-shrink:0;height:62px;
+  background:linear-gradient(0deg,#060f09,#0a1f12);
+  border-top:1px solid var(--gold-bdr);
+  display:flex;align-items:stretch;
+  padding-bottom:env(safe-area-inset-bottom);
+  z-index:50;position:relative;
+}
+.ni{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;
+  cursor:pointer;position:relative;
+  border:none;background:transparent;
+  color:var(--text3);padding:6px 2px;
+  transition:color .2s;
+}
+.ni.on{color:var(--gold);}
+.ni .ico{font-size:19px;line-height:1;}
+.ni .lbl{font-size:9.5px;font-weight:700;letter-spacing:.2px;}
+.ni .nb{
+  position:absolute;top:5px;left:calc(50% + 4px);
+  min-width:14px;height:14px;background:var(--red);
+  border-radius:var(--r-full);font-size:8px;font-weight:800;
+  color:#fff;display:flex;align-items:center;justify-content:center;padding:0 3px;
+}
+.ni .dot{
+  position:absolute;bottom:3px;left:50%;transform:translateX(-50%);
+  width:4px;height:4px;background:var(--gold);
+  border-radius:var(--r-full);opacity:0;transition:opacity .2s;
+}
+.ni.on .dot{opacity:1;}
+
+/* ═══════════════════════════════════════
+   FAB MESSENGER
+═══════════════════════════════════════ */
+.fab{
+  position:fixed;
+  bottom:76px;right:calc(50% - 215px + 14px);
+  width:50px;height:50px;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold-dk));
+  border-radius:var(--r-full);
+  display:flex;align-items:center;justify-content:center;
+  font-size:21px;cursor:pointer;border:none;
+  box-shadow:0 4px 18px rgba(212,175,55,.45);
+  z-index:45;transition:transform .2s;
+  animation:fabPulse 3s ease-in-out infinite;
+}
+.fab:active{transform:scale(.92);}
+.fab .fb{
+  position:absolute;top:-3px;right:-3px;
+  min-width:18px;height:18px;background:var(--red);
+  border-radius:var(--r-full);font-size:10px;font-weight:800;
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--bg);
+}
+@keyframes fabPulse{
+  0%,100%{box-shadow:0 4px 18px rgba(212,175,55,.4);}
+  50%{box-shadow:0 4px 28px rgba(212,175,55,.7);}
+}
+
+/* ═══════════════════════════════════════
+   SHARED COMPONENTS
+═══════════════════════════════════════ */
+.card{background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:16px;}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold-bdr),transparent);margin:12px 0;}
+.arabic{font-family:'Amiri',serif;direction:rtl;text-align:center;}
+.gold-title{font-family:'Cinzel',serif;color:var(--gold);}
+.tag{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:5px 12px;border-radius:var(--r-full);
+  font-size:12px;font-weight:700;
+  background:var(--card2);border:1px solid var(--gold-bdr);
+  color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s;
+}
+.tag.on{background:var(--em-btn);border-color:var(--gold);color:var(--gold);}
+
+/* BUTTONS */
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:12px 20px;border-radius:var(--r-full);border:none;
+  cursor:pointer;font-weight:700;font-size:14px;
+  transition:all .2s;width:100%;
+}
+.btn:active{transform:scale(.97);}
+.btn-gold{background:linear-gradient(135deg,var(--gold-lt),var(--gold),var(--gold-dk));color:#071810;box-shadow:0 3px 14px rgba(212,175,55,.35);}
+.btn-em{background:var(--em-btn);color:var(--text);border:1px solid rgba(255,255,255,.1);}
+.btn-dash{background:transparent;border:1.5px dashed var(--gold);color:var(--gold);}
+
+/* PROGRESS BAR */
+.pbar{height:6px;background:var(--card2);border-radius:var(--r-full);overflow:hidden;margin:4px 0;}
+.pfill{height:100%;background:linear-gradient(90deg,var(--gold-dk),var(--gold));border-radius:var(--r-full);transition:width 1.2s ease;}
+
+/* ═══════════════════════════════════════
+   SCREEN: ACCUEIL
+═══════════════════════════════════════ */
+.composer{
+  margin:12px 14px 10px;
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:13px 14px;
+}
+.composer textarea{
+  width:100%;background:transparent;border:none;outline:none;
+  color:var(--text2);font-family:'Nunito',sans-serif;font-size:14px;
+  resize:none;min-height:42px;
+}
+.composer textarea::placeholder{color:var(--text3);}
+.comp-actions{
+  display:flex;gap:14px;margin-top:8px;padding-top:9px;
+  border-top:1px solid var(--gold-bdr);
+}
+.comp-act{
+  display:flex;align-items:center;gap:5px;
+  color:var(--text3);font-size:12px;font-weight:700;
+  background:none;border:none;cursor:pointer;padding:0;transition:color .15s;
+}
+.comp-act:active{color:var(--gold);}
+
+/* RAPPEL BANNER */
+.rappel-banner{
+  margin:0 14px 12px;
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);
+  padding:16px;position:relative;
+}
+.rappel-lbl{
+  font-family:'Cinzel',serif;font-size:10px;
+  letter-spacing:2.5px;color:var(--gold);
+  text-align:center;margin-bottom:10px;text-transform:uppercase;
+}
+.rappel-arabic{
+  font-family:'Amiri',serif;font-size:20px;color:var(--gold);
+  direction:rtl;text-align:center;line-height:1.65;margin-bottom:8px;
+}
+.rappel-trans{
+  font-style:italic;font-size:13px;color:var(--text2);
+  text-align:center;line-height:1.6;
+}
+.rappel-src{font-size:11px;color:var(--gold);text-align:center;margin-top:5px;}
+.rappel-hdth-title{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin:10px 0 5px;}
+.audio-btn{
+  position:absolute;right:12px;top:12px;width:36px;height:36px;
+  background:var(--gold);border-radius:var(--r-full);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;cursor:pointer;border:none;color:#071810;
+}
+
+/* POST CARD */
+.post{
+  margin:0 14px 12px;
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);overflow:hidden;
+}
+.post-hdr{display:flex;align-items:center;padding:12px 13px 8px;gap:10px;}
+.post-av{
+  width:38px;height:38px;border-radius:var(--r-full);flex-shrink:0;
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:1.5px solid var(--gold-bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;color:var(--gold);
+}
+.post-meta{flex:1;}
+.post-author{font-weight:700;font-size:13.5px;}
+.post-time{font-size:11px;color:var(--text3);}
+.post-menu{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px;}
+.post-body{padding:0 13px 10px;font-size:14px;line-height:1.6;}
+.post-img{
+  width:100%;aspect-ratio:4/3;
+  background:var(--card2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text3);font-size:34px;
+}
+.post-reactions{
+  display:flex;gap:6px;padding:8px 13px;
+  overflow-x:auto;scrollbar-width:none;
+}
+.post-reactions::-webkit-scrollbar{display:none;}
+.rxn{
+  display:inline-flex;align-items:center;gap:4px;padding:4px 10px;
+  background:var(--card2);border:1px solid var(--gold-bdr);
+  border-radius:var(--r-full);font-size:11.5px;font-weight:600;
+  color:var(--text2);cursor:pointer;flex-shrink:0;transition:all .15s;white-space:nowrap;
+}
+.rxn:active,.rxn.on{background:var(--gold-dim);border-color:var(--gold);color:var(--gold);}
+.post-acts{display:flex;border-top:1px solid var(--gold-bdr);}
+.post-act{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:5px;
+  padding:10px 6px;background:none;border:none;
+  color:var(--text3);font-size:12px;font-weight:700;
+  cursor:pointer;font-family:'Nunito',sans-serif;transition:color .15s;
+}
+.post-act:not(:last-child){border-right:1px solid var(--gold-bdr);}
+.post-act:active{color:var(--gold);}
+
+/* ═══════════════════════════════════════
+   SCREEN: RAPPELS
+═══════════════════════════════════════ */
+.rappels-wrap{padding:16px;display:flex;flex-direction:column;gap:14px;}
+.verset-card{
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);
+  padding:18px;position:relative;
+}
+.verset-label{font-size:11px;font-weight:800;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.verset-arabic{font-family:'Amiri',serif;font-size:25px;color:var(--gold);direction:rtl;text-align:center;line-height:1.7;margin:10px 0;}
+.verset-trans{font-style:italic;font-size:13.5px;color:var(--text2);text-align:center;line-height:1.6;}
+.verset-src{font-size:12px;color:var(--gold);text-align:center;margin-top:6px;}
+.prayer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px;}
+.prayer-item{text-align:center;}
+.prayer-name{font-size:11px;color:var(--text3);margin-bottom:3px;}
+.prayer-time{font-size:19px;font-weight:800;}
+.prayer-time.now{color:var(--gold);}
+
+/* ═══════════════════════════════════════
+   SCREEN: ANNONCES
+═══════════════════════════════════════ */
+.annonces-wrap{padding:14px;}
+.cats{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;margin-bottom:14px;}
+.cats::-webkit-scrollbar{display:none;}
+.prof-card{
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);
+  padding:14px;margin-bottom:12px;
+}
+.prof-hdr{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.prof-av{
+  width:46px;height:46px;border-radius:var(--r-sm);flex-shrink:0;
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:1px solid var(--gold-bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;color:var(--gold);
+}
+.prof-name{font-weight:700;font-size:14px;display:flex;align-items:center;gap:5px;}
+.chk{color:var(--green);font-size:13px;}
+.prof-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.prof-bio{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:10px;}
+.prof-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.prof-tag{
+  padding:3px 10px;background:var(--card2);border:1px solid var(--gold-bdr);
+  border-radius:var(--r-full);font-size:11px;color:var(--text2);
+}
+
+/* ═══════════════════════════════════════
+   SCREEN: SOLIDARITÉ
+═══════════════════════════════════════ */
+.soli-wrap{padding:14px;}
+.stats-row{
+  background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);
+  padding:16px;display:grid;grid-template-columns:repeat(3,1fr);
+  text-align:center;margin-bottom:14px;
+}
+.sv{font-size:20px;font-weight:800;color:var(--gold);}
+.sv.g{color:var(--green);}
+.sl{font-size:10.5px;color:var(--text3);margin-top:2px;}
+.aid-card{background:var(--card);border:1px solid var(--gold-bdr);border-radius:var(--r);padding:15px;margin-bottom:12px;}
+.aid-badges{display:flex;align-items:center;gap:7px;margin-bottom:9px;}
+.b-urg{padding:3px 9px;background:rgba(229,62,62,.18);border:1px solid rgba(229,62,62,.35);border-radius:var(--r-full);font-size:11px;font-weight:700;color:#fc8181;}
+.b-std{padding:3px 9px;background:var(--gold-dim);border:1px solid var(--gold-bdr);border-radius:var(--r-full);font-size:11px;font-weight:700;color:var(--gold);}
+.b-med{padding:3px 9px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:var(--r-full);font-size:11px;font-weight:700;color:#86efac;}
+.b-ver{display:flex;align-items:center;gap:3px;font-size:11px;color:var(--green);}
+.aid-title{font-weight:700;font-size:15px;margin-bottom:6px;}
+.aid-desc{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;}
+.aid-prog{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;}
+.aid-amt{font-weight:700;color:var(--gold);}
+.aid-goal{color:var(--text3);}
+.aid-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:12px;margin-top:7px;}
+
+/* ═══════════════════════════════════════
+   SCREEN: PROFIL
+═══════════════════════════════════════ */
+.prof-banner{
+  height:120px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#0F4C3A,#1e6b4a,#0a2e20);
+  display:flex;align-items:center;justify-content:center;
+}
+.prof-banner-arabic{font-family:'Amiri',serif;font-size:30px;color:rgba(212,175,55,.25);direction:rtl;}
+.prof-edit-btn{
+  position:absolute;right:14px;bottom:12px;
+  padding:6px 14px;background:var(--gold);color:#071810;
+  border-radius:var(--r-full);font-size:12px;font-weight:700;
+  border:none;cursor:pointer;
+}
+.prof-av-wrap{padding:0 16px;margin-top:-28px;margin-bottom:10px;}
+.prof-av-circle{
+  width:70px;height:70px;border-radius:var(--r-full);
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:3px solid var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:22px;color:var(--gold);
+}
+.prof-info{padding:0 16px 10px;}
+.prof-name{font-size:20px;font-weight:800;margin-bottom:4px;}
+.prof-bio{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:12px;}
+.prof-stats{display:flex;gap:22px;margin-bottom:12px;}
+.ps-val{font-size:21px;font-weight:800;}
+.ps-val.g{color:var(--gold);}
+.ps-val.gr{color:var(--green);}
+.ps-lbl{font-size:10.5px;color:var(--text3);}
+.prof-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.prof-chip{padding:5px 12px;background:var(--card2);border:1px solid var(--gold-bdr);border-radius:var(--r-full);font-size:12px;font-weight:600;}
+.medals-title{font-size:13.5px;font-weight:700;color:var(--gold);margin-bottom:9px;padding:0 16px;}
+.medals-row{display:flex;gap:9px;padding:0 16px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;}
+.medals-row::-webkit-scrollbar{display:none;}
+.medal{width:50px;height:50px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.35);}
+.prof-counts{display:flex;gap:18px;padding:10px 16px;border-top:1px solid var(--gold-bdr);border-bottom:1px solid var(--gold-bdr);}
+.pc{font-size:13px;font-weight:700;}.pc span{color:var(--gold);}
+.prof-tabs{display:flex;border-bottom:1px solid var(--gold-bdr);}
+.ptab{
+  flex:1;padding:10px 4px;text-align:center;font-size:12.5px;font-weight:700;
+  color:var(--text3);cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;transition:all .2s;
+}
+.ptab.on{color:var(--gold);border-bottom-color:var(--gold);}
+.p-posts{padding:0 16px;}
+.p-post{padding:12px 0;border-bottom:1px solid var(--gold-bdr);}
+.p-post-txt{font-size:13.5px;line-height:1.55;margin-bottom:7px;}
+.p-post-meta{font-size:11px;color:var(--text3);display:flex;gap:14px;}
+
+/* ═══════════════════════════════════════
+   MESSENGER OVERLAY
+═══════════════════════════════════════ */
+.msg-overlay{
+  position:fixed;inset:0;z-index:200;
+  display:none;max-width:430px;margin:0 auto;
+}
+.msg-overlay.open{display:flex;flex-direction:column;}
+.msg-bg{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(5px);}
+.msg-panel{
+  position:relative;z-index:1;
+  width:100%;height:100%;background:var(--bg);
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.msg-overlay.open .msg-panel{transform:translateY(0);}
+
+.msg-hdr{
+  padding:14px 16px;
+  padding-top:max(14px,env(safe-area-inset-top));
+  background:linear-gradient(180deg,#0b2619,var(--bg));
+  border-bottom:1px solid var(--gold-bdr);
+  display:flex;align-items:center;gap:11px;
+}
+.msg-back{background:none;border:none;color:var(--gold);font-size:22px;cursor:pointer;padding:2px 6px 2px 0;}
+.msg-title{flex:1;font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);letter-spacing:1.5px;}
+.msg-count{font-size:12px;color:var(--text3);}
+
+/* CONV LIST */
+.conv-list{flex:1;overflow-y:auto;scrollbar-width:none;}
+.conv-list::-webkit-scrollbar{display:none;}
+.conv{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-bottom:1px solid rgba(255,255,255,.04);
+  cursor:pointer;transition:background .15s;
+}
+.conv:active{background:var(--card);}
+.conv-av{
+  width:46px;height:46px;border-radius:var(--r-full);flex-shrink:0;
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:1.5px solid var(--gold-bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+}
+.conv-info{flex:1;min-width:0;}
+.conv-name{font-weight:700;font-size:14px;margin-bottom:3px;}
+.conv-prev{font-size:12px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.conv-right{text-align:right;flex-shrink:0;}
+.conv-time{font-size:11px;color:var(--text3);margin-bottom:5px;}
+.conv-unread{
+  min-width:19px;height:19px;background:var(--red);
+  border-radius:var(--r-full);font-size:10px;font-weight:800;
+  color:#fff;display:flex;align-items:center;justify-content:center;margin-left:auto;
+}
+
+/* CHAT SCREEN */
+.chat-scr{
+  position:absolute;inset:0;background:var(--bg);
+  display:flex;flex-direction:column;z-index:10;
+  transform:translateX(100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+}
+.chat-scr.open{transform:translateX(0);}
+.chat-hdr{
+  padding:12px 14px;
+  padding-top:max(12px,env(safe-area-inset-top));
+  background:linear-gradient(180deg,#0b2619,var(--bg));
+  border-bottom:1px solid var(--gold-bdr);
+  display:flex;align-items:center;gap:10px;
+}
+.chat-back{background:none;border:none;color:var(--gold);font-size:22px;cursor:pointer;padding:2px 6px 2px 0;}
+.chat-av{
+  width:36px;height:36px;border-radius:var(--r-full);flex-shrink:0;
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:1.5px solid var(--gold-bdr);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--gold);position:relative;
+}
+.chat-av .ondot{position:absolute;bottom:0;right:0;width:9px;height:9px;background:var(--green);border-radius:var(--r-full);border:1.5px solid var(--bg);}
+.chat-name h3{font-size:15px;font-weight:700;}
+.chat-name p{font-size:11px;color:var(--green);}
+.chat-name{flex:1;}
+.chat-tools{display:flex;gap:10px;}
+.chat-tools span{font-size:20px;color:var(--text3);cursor:pointer;}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:14px;scrollbar-width:none;}
+.chat-msgs::-webkit-scrollbar{display:none;}
+.mw{display:flex;flex-direction:column;max-width:78%;}
+.mw.s{align-self:flex-end;align-items:flex-end;}
+.mw.r{align-self:flex-start;}
+.mb{padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;}
+.mw.r .mb{background:var(--card2);border:1px solid var(--gold-bdr);border-bottom-left-radius:4px;}
+.mw.s .mb{background:linear-gradient(135deg,var(--gold-lt),var(--gold-dk));color:#071810;font-weight:600;border-bottom-right-radius:4px;}
+.mt{font-size:10px;color:var(--text3);margin-top:3px;}
+.chat-bar{
+  padding:11px 14px;padding-bottom:max(11px,env(safe-area-inset-bottom));
+  border-top:1px solid var(--gold-bdr);background:var(--bg);
+  display:flex;align-items:center;gap:9px;
+}
+.chat-mic{width:34px;height:34px;background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;}
+.chat-inp{
+  flex:1;background:var(--input-bg);border:1px solid var(--gold-bdr);
+  border-radius:var(--r-full);padding:10px 15px;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:14px;outline:none;
+}
+.chat-inp::placeholder{color:var(--text3);}
+.chat-send{
+  width:40px;height:40px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--gold-lt),var(--gold-dk));
+  border:none;border-radius:var(--r-full);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;cursor:pointer;color:#071810;
+}
+
+/* ═══════════════════════════════════════
+   MENU DRAWER
+═══════════════════════════════════════ */
+.menu-ov{position:fixed;inset:0;z-index:300;display:none;max-width:430px;margin:0 auto;}
+.menu-ov.open{display:block;}
+.menu-bd{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);}
+.menu-drw{
+  position:absolute;left:0;top:0;bottom:0;width:84%;max-width:310px;
+  background:linear-gradient(180deg,#0b2619 0%,var(--bg) 100%);
+  border-right:1px solid var(--gold-bdr);
+  display:flex;flex-direction:column;
+  transform:translateX(-100%);
+  transition:transform .3s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;scrollbar-width:none;
+}
+.menu-drw::-webkit-scrollbar{display:none;}
+.menu-ov.open .menu-drw{transform:translateX(0);}
+.menu-top{
+  padding:18px 18px 14px;
+  padding-top:max(18px,env(safe-area-inset-top));
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--gold-bdr);
+}
+.menu-logo-row{display:flex;align-items:center;gap:7px;}
+.menu-logo-txt{font-family:'Cinzel',serif;font-size:14px;font-weight:700;color:var(--gold);}
+.menu-x{background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;}
+.menu-user{
+  padding:14px 18px;display:flex;align-items:center;gap:11px;
+  border-bottom:1px solid var(--gold-bdr);
+}
+.menu-uav{
+  width:46px;height:46px;border-radius:var(--r-full);
+  background:linear-gradient(135deg,var(--em-light),var(--em));
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:15px;color:var(--gold);
+}
+.menu-uname{font-weight:700;font-size:14px;}
+.menu-ulvl{font-size:11px;color:var(--text3);margin-top:2px;}
+.menu-app{
+  margin:11px 18px;background:var(--card);border:1px solid var(--gold-bdr);
+  border-radius:var(--r);padding:12px 13px;
+  display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .15s;
+}
+.menu-app:active{background:var(--card2);}
+.menu-app .ai{font-size:20px;}
+.menu-app .at .an{font-size:14px;font-weight:700;color:var(--gold);}
+.menu-app .at .as{font-size:11px;color:var(--text3);}
+.menu-sec{padding:10px 18px 4px;font-size:10px;font-weight:800;letter-spacing:2px;color:var(--text3);text-transform:uppercase;}
+.menu-item{
+  display:flex;align-items:center;gap:13px;padding:13px 18px;
+  cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:left;
+}
+.menu-item:active{background:var(--gold-dim);}
+.menu-item .mi{font-size:19px;width:22px;text-align:center;}
+.menu-item .ml{font-size:14px;font-weight:600;color:var(--text);}
+.menu-foot{margin-top:auto;padding:18px;text-align:center;border-top:1px solid var(--gold-bdr);}
+.menu-foot .fa{font-family:'Amiri',serif;font-size:18px;color:var(--gold);direction:rtl;margin-bottom:3px;}
+.menu-foot .ft{font-size:11px;color:var(--text3);}
+
+/* ═══════════════════════════════════════
+   NOTIFICATIONS PANEL
+═══════════════════════════════════════ */
+.notif-pnl{
+  position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);
+  width:100%;max-width:430px;z-index:250;
+  background:var(--bg);border-bottom:1px solid var(--gold-bdr);
+  padding:14px;padding-top:max(14px,env(safe-area-inset-top));
+  max-height:72vh;overflow-y:auto;scrollbar-width:none;
+  transition:transform .3s ease;
+}
+.notif-pnl::-webkit-scrollbar{display:none;}
+.notif-pnl.open{transform:translateX(-50%) translateY(0);}
+.notif-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.notif-hdr-title{font-weight:700;font-size:16px;}
+.notif-close{background:none;border:none;color:var(--text3);font-size:20px;cursor:pointer;}
+.notif-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.ni-ico{font-size:21px;flex-shrink:0;}
+.ni-txt{font-size:13px;line-height:1.5;}
+.ni-time{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+.toast{
+  position:fixed;bottom:84px;left:50%;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--card);border:1px solid var(--gold-bdr);
+  border-radius:var(--r-full);padding:9px 20px;
+  font-size:13px;font-weight:600;color:var(--gold);
+  opacity:0;transition:all .28s;z-index:500;
+  white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ═══════════════════════════════════════
+   SCREEN TITLE ROW
+═══════════════════════════════════════ */
+.scr-title{font-family:'Cinzel',serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:3px;}
+.scr-sub{font-size:12.5px;color:var(--text3);margin-bottom:14px;}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+.screen.active > *{animation:slideUp .3s ease forwards;}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="hdr">
+  <button class="hdr-menu-btn" onclick="openMenu()">☰</button>
+  <div class="hdr-logo">
+    <span class="moon">🌙</span>
+    <div class="hdr-logo-txt">
+      <span class="hdr-logo-main">Dar Al Loughah</span>
+      <span class="hdr-logo-sub">Communauté</span>
+    </div>
+  </div>
+  <div class="hdr-actions">
+    <button class="hdr-btn" onclick="openSearch()">🔍</button>
+    <button class="hdr-btn" onclick="toggleNotif()">
+      🔔<span class="badge">7</span>
+    </button>
+    <button class="hdr-btn" onclick="openMessenger()">
+      💬<span class="badge">3</span>
+    </button>
+    <div class="hdr-avatar" onclick="nav('profil')">
+      AY<span class="dot-online"></span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════ SCREENS ══════════════════ -->
+<div class="screens">
+
+  <!-- ▸▸ ACCUEIL ◂◂ -->
+  <div id="s-accueil" class="screen active">
+
+    <div class="composer">
+      <textarea placeholder="Partagez votre rappel ou réflexion..." rows="2" oninput="autoH(this)"></textarea>
+      <div class="comp-actions">
+        <button class="comp-act">🖼️ Photo</button>
+        <button class="comp-act">📊 Sondage</button>
+        <button class="comp-act" onclick="toast('🤲 Type Du\'a sélectionné')">✨ Du'a</button>
+      </div>
+    </div>
+
+    <!-- Rappel Banner -->
+    <div class="rappel-banner">
+      <div class="rappel-lbl">✦ Rappel Spirituel ✦</div>
+      <div class="divider" style="margin:0 0 11px;"></div>
+      <div class="rappel-arabic">اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ</div>
+      <p class="rappel-trans">« Allah est la Lumière des cieux et de la terre… et les bonnes œuvres sont parmi les meilleures conditions… »</p>
+      <p class="rappel-src">— Sourate An-Nur (35)</p>
+      <div class="divider"></div>
+      <p class="rappel-hdth-title">HADITH</p>
+      <p class="rappel-trans" style="text-align:left;">« La meilleure aumône est celle faite par quelqu'un qui a peu de moyens. »</p>
+      <p class="rappel-src" style="text-align:left;">— Bukhari</p>
+      <button class="audio-btn" onclick="toast('🎵 Lecture...')">🎧</button>
+    </div>
+
+    <!-- Post 1 -->
+    <div class="post">
+      <div class="post-hdr">
+        <div class="post-av">Y</div>
+        <div class="post-meta">
+          <div class="post-author">Yassine Al-Maghribi</div>
+          <div class="post-time">Il y a 2h</div>
+        </div>
+        <button class="post-menu">⋯</button>
+      </div>
+      <div class="post-body">Jumu'ah Mubarak à tous ! 🌙<br>Qu'Allah accepte nos prières.</div>
+      <div class="post-img">🖼️</div>
+      <div class="post-reactions">
+        <button class="rxn on" onclick="rxn(this)">🤲 BarakAllah feek (32)</button>
+        <button class="rxn" onclick="rxn(this)">🌙 Mubarak (16)</button>
+        <button class="rxn" onclick="rxn(this)">🙏 Du'a (8)</button>
+      </div>
+      <div class="post-acts">
+        <button class="post-act">♡ Mubarak</button>
+        <button class="post-act">💬 Commenter</button>
+        <button class="post-act">↗ Partager</button>
+      </div>
+    </div>
+
+    <!-- Post 2 -->
+    <div class="post">
+      <div class="post-hdr">
+        <div class="post-av" style="background:linear-gradient(135deg,#1a5c60,#0f3c40);">A</div>
+        <div class="post-meta">
+          <div class="post-author">Abdullah Al-Mubarak</div>
+          <div class="post-time">Il y a 1h</div>
+        </div>
+        <button class="post-menu" style="color:var(--gold);">›</button>
+      </div>
+      <div class="post-body">Alhamdulillah, je viens de terminer la mémorisation de la sourate Al-Baqara après 2 ans de travail quotidien. Qu'Allah facilite à tous ceux qui sont sur ce chemin ! 🤲</div>
+      <div class="post-reactions">
+        <button class="rxn" onclick="rxn(this)">🤲 BarakAllah feek (85)</button>
+        <button class="rxn on" onclick="rxn(this)">🌙 Mubarak (41)</button>
+        <button class="rxn" onclick="rxn(this)">🙏 Du'a (12)</button>
+      </div>
+      <div class="post-acts">
+        <button class="post-act">♡ Mubarak</button>
+        <button class="post-act">💬 Commenter</button>
+        <button class="post-act">↗ Partager</button>
+      </div>
+    </div>
+
+    <!-- Post 3 -->
+    <div class="post">
+      <div class="post-hdr">
+        <div class="post-av" style="background:linear-gradient(135deg,#4a1a5c,#2e0a40);">F</div>
+        <div class="post-meta">
+          <div class="post-author">Fatima Az-Zahra</div>
+          <div class="post-time">Il y a 3h</div>
+        </div>
+        <button class="post-menu">⋯</button>
+      </div>
+      <div class="post-body">Nouvelle session de cours de tajwid en ligne ! Inscriptions ouvertes jusqu'au 15 du mois. Niveau débutant à avancé. Professeurs diplômés d'Al-Azhar. 📚</div>
+      <div class="post-reactions">
+        <button class="rxn" onclick="rxn(this)">🤲 BarakAllah feek (131)</button>
+        <button class="rxn" onclick="rxn(this)">🌙 Mubarak (45)</button>
+        <button class="rxn" onclick="rxn(this)">🙏 Du'a (19)</button>
+      </div>
+      <div class="post-acts">
+        <button class="post-act">♡ Mubarak</button>
+        <button class="post-act">💬 Commenter</button>
+        <button class="post-act">↗ Partager</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸▸ RAPPELS ◂◂ -->
+  <div id="s-rappels" class="screen">
+    <div class="rappels-wrap">
+      <div>
+        <div class="scr-title">Rappels Spirituels</div>
+        <p class="scr-sub">Nourrissez votre foi au quotidien</p>
+      </div>
+
+      <div class="verset-card">
+        <p class="verset-label">📖 Verset du Jour</p>
+        <div class="verset-arabic">إِنَّ مَعَ الْعُسْرِ يُسْرًا</div>
+        <p class="verset-trans">Certes, avec la difficulté vient la facilité.</p>
+        <p class="verset-src">Sourate Ash-Sharh (94:6)</p>
+        <button class="btn btn-em" style="margin-top:13px;" onclick="toast('🎵 Lecture audio...')">▶ Écouter</button>
+      </div>
+
+      <div class="verset-card">
+        <p class="verset-label">📜 Hadith du Jour</p>
+        <div class="verset-arabic" style="font-size:18px;">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</div>
+        <p class="verset-trans">Celui qui prend un chemin pour rechercher la science, Allah lui facilite un chemin vers le Paradis.</p>
+        <p class="verset-src">Rapporté par Muslim</p>
+      </div>
+
+      <div class="verset-card">
+        <p class="verset-label">🤲 Du'a du Matin</p>
+        <div class="verset-arabic" style="font-size:18px;">أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلَّهِ، وَالْحَمْدُ لِلَّهِ</div>
+        <p class="verset-trans">Nous voici au matin et le royaume appartient à Allah, et la louange est à Allah.</p>
+        <p class="verset-src">Invocation du matin</p>
+      </div>
+
+      <div class="verset-card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <p class="verset-label" style="margin:0;">🕌 Horaires de Prière</p>
+          <span style="font-size:12px;color:var(--text3);">Paris</span>
+        </div>
+        <div class="prayer-grid">
+          <div class="prayer-item"><div class="prayer-name">Fajr</div><div class="prayer-time">05:23</div></div>
+          <div class="prayer-item"><div class="prayer-name">Lever</div><div class="prayer-time">06:58</div></div>
+          <div class="prayer-item"><div class="prayer-name">Dhuhr</div><div class="prayer-time">13:45</div></div>
+          <div class="prayer-item"><div class="prayer-name">Asr</div><div class="prayer-time now">17:32</div></div>
+          <div class="prayer-item"><div class="prayer-name">Maghrib</div><div class="prayer-time">21:15</div></div>
+          <div class="prayer-item"><div class="prayer-name">Isha</div><div class="prayer-time">22:45</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸▸ ANNONCES ◂◂ -->
+  <div id="s-annonces" class="screen">
+    <div class="annonces-wrap">
+      <div class="scr-title">Annonces</div>
+      <p class="scr-sub">Trouvez des professeurs, correspondants et plus</p>
+
+      <div class="cats">
+        <button class="tag on" onclick="filterCat(this)">🧑‍🏫 Je suis prof</button>
+        <button class="tag" onclick="filterCat(this)">🎓 Cherche prof</button>
+        <button class="tag" onclick="filterCat(this)">🗣 Correspondants</button>
+        <button class="tag" onclick="filterCat(this)">💍 Zawaj</button>
+      </div>
+
+      <button class="btn btn-dash" style="margin-bottom:14px;" onclick="toast('✏️ Nouvelle annonce')">+ Publier une annonce</button>
+
+      <div class="prof-card">
+        <div class="prof-hdr">
+          <div class="prof-av">SM</div>
+          <div>
+            <div class="prof-name">Sheikh Muhammad Amin <span class="chk">✔</span></div>
+            <div class="prof-sub">45 ans • Paris</div>
+          </div>
+        </div>
+        <p class="prof-bio">Diplômé d'Al-Azhar, 20 ans d'expérience. Spécialiste tajwid et mémorisation. Cours en présentiel ou en ligne.</p>
+        <div class="prof-tags">
+          <span class="prof-tag">Arabe</span><span class="prof-tag">Français</span><span class="prof-tag">Anglais</span>
+        </div>
+        <button class="btn btn-em" onclick="chatWith('SM','Sheikh Muhammad Amin')">Envoyer un message</button>
+      </div>
+
+      <div class="prof-card">
+        <div class="prof-hdr">
+          <div class="prof-av" style="background:linear-gradient(135deg,#3a1a5c,#2a0a3c);">NH</div>
+          <div>
+            <div class="prof-name">Ustadha Nour El-Houda <span class="chk">✔</span></div>
+            <div class="prof-sub">35 ans • Lyon</div>
+          </div>
+        </div>
+        <p class="prof-bio">Professeure certifiée, méthode Nourania. Cours pour femmes et enfants uniquement. Patiente et pédagogue.</p>
+        <div class="prof-tags">
+          <span class="prof-tag">Arabe</span><span class="prof-tag">Français</span>
+        </div>
+        <button class="btn btn-em" onclick="chatWith('NH','Ustadha Nour El-Houda')">Envoyer un message</button>
+      </div>
+
+      <div class="prof-card">
+        <div class="prof-hdr">
+          <div class="prof-av" style="background:linear-gradient(135deg,#1a3a5c,#0a2040);">KA</div>
+          <div>
+            <div class="prof-name">Khalid Al-Andalusi <span class="chk">✔</span></div>
+            <div class="prof-sub">38 ans • Marseille</div>
+          </div>
+        </div>
+        <p class="prof-bio">Hafiz du Coran, diplômé de Médine. Spécialisé dans l'arabe coranique et classique. 15 ans d'enseignement.</p>
+        <div class="prof-tags">
+          <span class="prof-tag">Arabe</span><span class="prof-tag">Français</span><span class="prof-tag">Espagnol</span>
+        </div>
+        <button class="btn btn-em" onclick="chatWith('KA','Khalid Al-Andalusi')">Envoyer un message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸▸ SOLIDARITÉ ◂◂ -->
+  <div id="s-solidarite" class="screen">
+    <div class="soli-wrap">
+      <div class="scr-title">Solidarité entre Musulmans</div>
+      <p class="scr-sub">Aidez vos frères et sœurs fi sabilillah</p>
+
+      <div class="stats-row">
+        <div><div class="sv">13 610€</div><div class="sl">Collectés ce mois</div></div>
+        <div><div class="sv g">279</div><div class="sl">Donateurs</div></div>
+        <div><div class="sv">12</div><div class="sl">Familles aidées</div></div>
+      </div>
+
+      <button class="btn btn-dash" style="margin-bottom:14px;" onclick="toast('📝 Formulaire de demande')">+ Demander de l'aide</button>
+
+      <div class="aid-card">
+        <div class="aid-badges"><span class="b-urg">Urgence</span><span class="b-ver">✔ Vérifié</span></div>
+        <h3 class="aid-title">Aide urgente — Famille de 5 enfants</h3>
+        <p class="aid-desc">Suite à un incendie, cette famille a tout perdu. Ils ont besoin d'aide pour se reloger et acheter les premières nécessités.</p>
+        <div class="aid-prog"><span class="aid-amt">4 520€</span><span class="aid-goal">sur 8 000€</span></div>
+        <div class="pbar"><div class="pfill" data-w="56%"></div></div>
+        <div class="aid-meta"><span>89 donateurs</span><span>Vérifié : Mosquée Al-Fath Paris</span></div>
+        <button class="btn btn-em" onclick="toast('💚 BarakAllah feek !')">Aider fi sabilillah</button>
+      </div>
+
+      <div class="aid-card">
+        <div class="aid-badges"><span class="b-std">Étudiant</span><span class="b-ver">✔ Vérifié</span></div>
+        <h3 class="aid-title">Étudiant en sciences islamiques</h3>
+        <p class="aid-desc">Youssef, 23 ans, étudie à l'institut Al-Ihsan. Il a besoin d'aide pour payer ses frais de scolarité ce semestre.</p>
+        <div class="aid-prog"><span class="aid-amt">1 200€</span><span class="aid-goal">sur 2 500€</span></div>
+        <div class="pbar"><div class="pfill" data-w="48%"></div></div>
+        <div class="aid-meta"><span>34 donateurs</span><span>Vérifié : Institut Al-Ihsan</span></div>
+        <button class="btn btn-em" onclick="toast('💚 BarakAllah feek !')">Aider fi sabilillah</button>
+      </div>
+
+      <div class="aid-card">
+        <div class="aid-badges"><span class="b-med">Médical</span><span class="b-ver">✔ Vérifié</span></div>
+        <h3 class="aid-title">Frais médicaux — Opération cardiaque</h3>
+        <p class="aid-desc">Notre frère Ahmad, père de 3 enfants, doit subir une opération urgente. Sa mutuelle ne couvre pas tous les frais.</p>
+        <div class="aid-prog"><span class="aid-amt">7 890€</span><span class="aid-goal">sur 12 000€</span></div>
+        <div class="pbar"><div class="pfill" data-w="66%"></div></div>
+        <div class="aid-meta"><span>156 donateurs</span><span>Vérifié : Entraide Musulmane</span></div>
+        <button class="btn btn-em" onclick="toast('💚 BarakAllah feek !')">Aider fi sabilillah</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▸▸ PROFIL ◂◂ -->
+  <div id="s-profil" class="screen">
+    <div class="prof-banner">
+      <div class="prof-banner-arabic">بِسْمِ اللَّهِ</div>
+      <button class="prof-edit-btn" onclick="toast('✏️ Modifier le profil')">Modifier profil</button>
+    </div>
+    <div class="prof-av-wrap"><div class="prof-av-circle">AY</div></div>
+    <div class="prof-info">
+      <h2 class="prof-name">Abdallah Ben Youssef</h2>
+      <p class="prof-bio">Étudiant en sciences islamiques | Passionné de langue arabe | Lyon, France</p>
+      <div class="prof-stats">
+        <div><div class="ps-val g">2450</div><div class="ps-lbl">XP</div></div>
+        <div><div class="ps-val gr">Niv. 12</div><div class="ps-lbl">Niveau</div></div>
+        <div><div class="ps-val">847</div><div class="ps-lbl">Mots appris</div></div>
+      </div>
+      <div class="prof-chips">
+        <span class="prof-chip">🇫🇷 France</span>
+        <span class="prof-chip">📍 Lyon</span>
+        <span class="prof-chip">🎂 28 ans</span>
+        <span class="prof-chip">👤 Homme</span>
+      </div>
+    </div>
+    <p class="medals-title">Médailles</p>
+    <div class="medals-row">
+      <div class="medal" style="background:linear-gradient(135deg,#FFD700,#B8860B);">🥇</div>
+      <div class="medal" style="background:linear-gradient(135deg,#C0C0C0,#808080);">🥈</div>
+      <div class="medal" style="background:linear-gradient(135deg,#CD7F32,#8B4513);">🥉</div>
+      <div class="medal" style="background:linear-gradient(135deg,#22c55e,#15803d);">💚</div>
+      <div class="medal" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">💙</div>
+      <div class="medal" style="background:linear-gradient(135deg,#e5e7eb,#9ca3af);">🤍</div>
+      <div class="medal" style="background:linear-gradient(135deg,#a855f7,#6b21a8);">💜</div>
+    </div>
+    <div class="divider" style="margin:0 16px;"></div>
+    <div class="prof-counts">
+      <span class="pc"><span>34</span> publications</span>
+      <span class="pc"><span>12</span> photos</span>
+      <span class="pc"><span>156</span> amis</span>
+    </div>
+    <div class="prof-tabs">
+      <button class="ptab on" onclick="ptab(this,'pubs')">Publications</button>
+      <button class="ptab" onclick="ptab(this,'photos')">Photos</button>
+      <button class="ptab" onclick="ptab(this,'amis')">Amis</button>
+      <button class="ptab" onclick="ptab(this,'apropos')">À propos</button>
+    </div>
+    <div class="p-posts" id="ptab-content">
+      <div class="p-post">
+        <p class="p-post-txt">Alhamdulillah, je viens de terminer la mémorisation de la sourate Al-Baqara après 2 ans de travail quotidien. Qu'Allah facilite à tous ceux qui sont sur ce chemin !</p>
+        <div class="p-post-meta"><span>85 réactions</span><span>12 commentaires</span><span>Il y a 2h</span></div>
+      </div>
+      <div class="p-post">
+        <p class="p-post-txt">Nouvelle session de cours de tajwid en ligne ! Inscriptions ouvertes jusqu'au 15 du mois.</p>
+        <div class="p-post-meta"><span>131 réactions</span><span>45 commentaires</span><span>Il y a 4h</span></div>
+      </div>
+      <div class="p-post">
+        <p class="p-post-txt">Qui aurait des recommandations de livres en arabe pour un niveau intermédiaire ?</p>
+        <div class="p-post-meta"><span>17 réactions</span><span>23 commentaires</span><span>Hier</span></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /screens -->
+
+<!-- ══════════════════ BOTTOM NAV ══════════════════ -->
+<nav class="bnav">
+  <button class="ni on" onclick="nav('accueil',this)">
+    <span class="ico">🏠</span><span class="lbl">Accueil</span><span class="dot"></span>
+  </button>
+  <button class="ni" onclick="nav('rappels',this)">
+    <span class="ico">📖</span><span class="lbl">Rappels</span><span class="dot"></span>
+  </button>
+  <button class="ni" onclick="nav('annonces',this)">
+    <span class="ico">📢</span><span class="lbl">Annonces</span>
+    <span class="nb">2</span><span class="dot"></span>
+  </button>
+  <button class="ni" onclick="nav('solidarite',this)">
+    <span class="ico">🤝</span><span class="lbl">Solidarité</span><span class="dot"></span>
+  </button>
+  <button class="ni" onclick="nav('profil',this)">
+    <span class="ico">👤</span><span class="lbl">Profil</span><span class="dot"></span>
+  </button>
+</nav>
+
+<!-- FAB -->
+<button class="fab" onclick="openMessenger()">💬<span class="fb">3</span></button>
+
+<!-- ══════════════════ MESSENGER OVERLAY ══════════════════ -->
+<div class="msg-overlay" id="msg-ov">
+  <div class="msg-bg" onclick="closeMessenger()"></div>
+  <div class="msg-panel">
+    <div class="msg-hdr">
+      <button class="msg-back" onclick="closeMessenger()">←</button>
+      <span class="msg-title">MESSAGES</span>
+      <span class="msg-count">3 discussions</span>
+    </div>
+    <div class="conv-list">
+      <div class="conv" onclick="chatWith('OF','Omar Al-Faruq')">
+        <div class="conv-av">🌙</div>
+        <div class="conv-info">
+          <div class="conv-name">Omar Al-Faruq</div>
+          <div class="conv-prev">Salaam alaykum... message...</div>
+        </div>
+        <div class="conv-right"><div class="conv-time">14:15</div><div class="conv-unread">2</div></div>
+      </div>
+      <div class="conv" onclick="chatWith('F','Fatima')">
+        <div class="conv-av">✨</div>
+        <div class="conv-info">
+          <div class="conv-name">Fatima</div>
+          <div class="conv-prev">Du'a reçus, barakAllah !</div>
+        </div>
+        <div class="conv-right"><div class="conv-time">14:10</div></div>
+      </div>
+      <div class="conv" onclick="chatWith('AF','Ahmad Al-Farsi')">
+        <div class="conv-av">🌟</div>
+        <div class="conv-info">
+          <div class="conv-name">Ahmad Al-Farsi</div>
+          <div class="conv-prev">In sha Allah samedi après-midi</div>
+        </div>
+        <div class="conv-right"><div class="conv-time">10:40</div></div>
+      </div>
+    </div>
+
+    <!-- CHAT SCREEN -->
+    <div class="chat-scr" id="chat-scr">
+      <div class="chat-hdr">
+        <button class="chat-back" onclick="closeChat()">←</button>
+        <div class="chat-av" id="chat-av">AF<span class="ondot"></span></div>
+        <div class="chat-name">
+          <h3 id="chat-nm">Ahmad Al-Farsi</h3>
+          <p>En ligne</p>
+        </div>
+        <div class="chat-tools"><span>📞</span><span>📹</span></div>
+      </div>
+      <div class="chat-msgs" id="chat-msgs"></div>
+      <div class="chat-bar">
+        <button class="chat-mic">🎤</button>
+        <input class="chat-inp" id="chat-inp" type="text" placeholder="Écrire un message..."
+          onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()">▲</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MENU DRAWER ══════════════════ -->
+<div class="menu-ov" id="menu-ov">
+  <div class="menu-bd" onclick="closeMenu()"></div>
+  <div class="menu-drw">
+    <div class="menu-top">
+      <div class="menu-logo-row">
+        <span>🌙</span>
+        <span class="menu-logo-txt">Dar Al Loughah</span>
+      </div>
+      <button class="menu-x" onclick="closeMenu()">✕</button>
+    </div>
+    <div class="menu-user">
+      <div class="menu-uav">AY</div>
+      <div>
+        <div class="menu-uname">Abdallah Ben Youssef</div>
+        <div class="menu-ulvl">Niveau 12 — 2450 XP</div>
+      </div>
+    </div>
+    <div class="menu-app" onclick="toast('📱 Ouverture de l\'app apprentissage...')">
+      <span class="ai">📚</span>
+      <div class="at">
+        <div class="an">Apprendre l'arabe</div>
+        <div class="as">Ouvrir l'application</div>
+      </div>
+    </div>
+    <p class="menu-sec">Plus de fonctionnalités</p>
+    <button class="menu-item" onclick="closeMenu();toast('💚 Section dons')">
+      <span class="mi">💚</span><span class="ml">Faire un don</span>
+    </button>
+    <button class="menu-item" onclick="closeMenu();toast('🎯 Créer une cagnotte')">
+      <span class="mi">🎯</span><span class="ml">Créer une cagnotte</span>
+    </button>
+    <button class="menu-item" onclick="closeMenu();toast('🌍 Projets solidaires')">
+      <span class="mi">🌍</span><span class="ml">Projets solidaires</span>
+    </button>
+    <button class="menu-item" onclick="closeMenu();toast('📣 Publicités Halal')">
+      <span class="mi">📣</span><span class="ml">Publicités Halal</span>
+    </button>
+    <button class="menu-item" onclick="closeMenu();toast('🎓 Formations islamiques')">
+      <span class="mi">🎓</span><span class="ml">Formations</span>
+    </button>
+    <button class="menu-item" onclick="closeMenu();nav('profil')">
+      <span class="mi">📝</span><span class="ml">Mes publications</span>
+    </button>
+    <div class="menu-foot">
+      <div class="fa">رَبِّ زِدْنِي عِلْمًا</div>
+      <div class="ft">Seigneur, augmente ma science</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ NOTIF PANEL ══════════════════ -->
+<div class="notif-pnl" id="notif-pnl">
+  <div class="notif-hdr">
+    <span class="notif-hdr-title">Notifications</span>
+    <button class="notif-close" onclick="toggleNotif()">✕</button>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">🤲</span>
+    <div><div class="ni-txt"><strong>Yassine Al-Maghribi</strong> a réagi — BarakAllah feek</div><div class="ni-time">Il y a 5 min</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">💬</span>
+    <div><div class="ni-txt"><strong>Omar Al-Faruq</strong> vous a envoyé un message</div><div class="ni-time">Il y a 15 min</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">✔</span>
+    <div><div class="ni-txt">Votre demande a été <strong>vérifiée</strong> par la Mosquée Al-Fath</div><div class="ni-time">Il y a 1h</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">📖</span>
+    <div><div class="ni-txt">Rappel : Prière Asr dans <strong>30 minutes</strong></div><div class="ni-time">Il y a 2h</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">🌙</span>
+    <div><div class="ni-txt"><strong>Abdullah Al-Mubarak</strong> vous a envoyé un du'a</div><div class="ni-time">Il y a 3h</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">💚</span>
+    <div><div class="ni-txt">Nouveau don pour la cause <strong>Famille de 5 enfants</strong></div><div class="ni-time">Il y a 4h</div></div>
+  </div>
+  <div class="notif-item">
+    <span class="ni-ico">🎓</span>
+    <div><div class="ni-txt">Nouvelle formation : <strong>Arabe coranique niveau 2</strong></div><div class="ni-time">Hier</div></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast-el"></div>
+
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+const S = {
+  screen: 'accueil',
+  notifOpen: false,
+  currentChat: null,
+  chats: {
+    'OF': { name:'Omar Al-Faruq', init:'OF', msgs:[
+      {f:'r',t:'Salaam alaykum akhi',ts:'14:10'},
+      {f:'r',t:'Tu seras à la mosquée ce soir ?',ts:'14:12'},
+      {f:'s',t:'Wa alaykumus salaam, ça va ?',ts:'14:13'},
+      {f:'r',t:'Alhamdulillah ! Et toi ?',ts:'14:15'},
+    ]},
+    'F': { name:'Fatima', init:'F', msgs:[
+      {f:'s',t:'As-salamu alaykum Fatima!',ts:'14:05'},
+      {f:'r',t:'Wa alaykumus salaam, ça va ?',ts:'14:07'},
+      {f:'s',t:'Alhamdulillah ! Et toi ?',ts:'14:08'},
+      {f:'r',t:"Du'a reçus, barakAllah !",ts:'14:10'},
+    ]},
+    'AF': { name:'Ahmad Al-Farsi', init:'AF', msgs:[
+      {f:'r',t:'Salaam alaykum akhi, tu seras disponible pour la session de révision ce week-end ?',ts:'10:30'},
+      {f:'s',t:'Wa alaykoum assalam wa rahmatullah ! Oui in sha Allah, samedi après-midi ça te convient ?',ts:'10:32'},
+      {f:'r',t:"Parfait ! On fait ça à 14h alors ? On pourrait revoir les règles de l'idgham",ts:'10:35'},
+      {f:'s',t:"Excellente idée, c'est exactement ce dont j'ai besoin. Tu veux qu'on utilise la visio ?",ts:'10:38'},
+      {f:'r',t:'Wa alaykoum assalam, oui je serai disponible in sha Allah',ts:'10:40'},
+    ]},
+    'SM':{ name:'Sheikh Muhammad Amin', init:'SM', msgs:[
+      {f:'s',t:"As-salamu alaykum Sheikh, je souhaite prendre des cours de tajwid. Êtes-vous disponible ?",ts:'09:00'}
+    ]},
+    'NH':{ name:'Ustadha Nour El-Houda', init:'NH', msgs:[
+      {f:'s',t:'As-salamu alaykum Ustadha, je cherche des cours pour ma fille de 8 ans.',ts:'11:00'}
+    ]},
+    'KA':{ name:'Khalid Al-Andalusi', init:'KA', msgs:[
+      {f:'s',t:"As-salamu alaykum, je suis intéressé par vos cours d'arabe classique.",ts:'15:00'}
+    ]}
+  }
+};
+
+// ══════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════
+function nav(id, btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s-'+id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  if(btn){ btn.classList.add('on'); }
+  else {
+    document.querySelectorAll('.ni').forEach(n=>{
+      if(n.getAttribute('onclick')&&n.getAttribute('onclick').includes("'"+id+"'")){n.classList.add('on');}
+    });
+  }
+  S.screen=id;
+  closeMenu();
+}
+
+// ══════════════════════════════════════════
+// MESSENGER
+// ══════════════════════════════════════════
+function openMessenger(){
+  document.getElementById('msg-ov').classList.add('open');
+}
+function closeMessenger(){
+  document.getElementById('msg-ov').classList.remove('open');
+  closeChat();
+}
+function chatWith(id,name){
+  S.currentChat=id;
+  if(!S.chats[id]){ S.chats[id]={name,init:id,msgs:[]}; }
+  document.getElementById('chat-nm').textContent=S.chats[id].name;
+  document.getElementById('chat-av').innerHTML=S.chats[id].init+'<span class="ondot"></span>';
+  renderMsgs(id);
+  document.getElementById('chat-scr').classList.add('open');
+  openMessenger();
+  setTimeout(()=>{
+    document.getElementById('chat-inp').focus();
+    scrollMsgs();
+  },320);
+}
+function closeChat(){
+  document.getElementById('chat-scr').classList.remove('open');
+  S.currentChat=null;
+}
+function renderMsgs(id){
+  const c=document.getElementById('chat-msgs');
+  const chat=S.chats[id];
+  if(!chat)return;
+  c.innerHTML=chat.msgs.map(m=>`
+    <div class="mw ${m.f==='s'?'s':'r'}">
+      <div class="mb">${m.t}</div>
+      <div class="mt">${m.ts}</div>
+    </div>
+  `).join('');
+  scrollMsgs();
+}
+function scrollMsgs(){
+  const c=document.getElementById('chat-msgs');
+  c.scrollTop=c.scrollHeight;
+}
+function sendMsg(){
+  const inp=document.getElementById('chat-inp');
+  const txt=inp.value.trim();
+  if(!txt||!S.currentChat)return;
+  const now=new Date();
+  const ts=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  S.chats[S.currentChat].msgs.push({f:'s',t:txt,ts});
+  inp.value='';
+  renderMsgs(S.currentChat);
+  const cid=S.currentChat;
+  const replies=['BarakAllah feek !','Wa alaykumus salaam !','In sha Allah.','Alhamdulillah !','Jazakallah khairan !','Oui in sha Allah 🤲'];
+  setTimeout(()=>{
+    const r=replies[Math.floor(Math.random()*replies.length)];
+    const n=new Date();
+    const ts2=n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+    if(S.chats[cid]){S.chats[cid].msgs.push({f:'r',t:r,ts:ts2});renderMsgs(cid);}
+  },900+Math.random()*600);
+}
+
+// ══════════════════════════════════════════
+// MENU
+// ══════════════════════════════════════════
+function openMenu(){ document.getElementById('menu-ov').classList.add('open'); }
+function closeMenu(){ document.getElementById('menu-ov').classList.remove('open'); }
+
+// ══════════════════════════════════════════
+// NOTIFICATIONS
+// ══════════════════════════════════════════
+function toggleNotif(){
+  S.notifOpen=!S.notifOpen;
+  document.getElementById('notif-pnl').classList.toggle('open',S.notifOpen);
+}
+function openSearch(){ toast('🔍 Recherche — bientôt disponible'); }
+
+// ══════════════════════════════════════════
+// REACTIONS
+// ══════════════════════════════════════════
+function rxn(btn){
+  btn.classList.toggle('on');
+  const m=btn.textContent.match(/\((\d+)\)/);
+  if(m){
+    const n=parseInt(m[1]);
+    const nn=btn.classList.contains('on')?n+1:n-1;
+    btn.textContent=btn.textContent.replace(/\(\d+\)/,'('+nn+')');
+  }
+}
+
+// ══════════════════════════════════════════
+// PROFIL TABS
+// ══════════════════════════════════════════
+function ptab(btn,tab){
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  const c=document.getElementById('ptab-content');
+  if(tab==='pubs'){
+    c.innerHTML=`
+      <div class="p-post"><p class="p-post-txt">Alhamdulillah, je viens de terminer la mémorisation de la sourate Al-Baqara après 2 ans de travail quotidien.</p><div class="p-post-meta"><span>85 réactions</span><span>12 commentaires</span><span>Il y a 2h</span></div></div>
+      <div class="p-post"><p class="p-post-txt">Nouvelle session de cours de tajwid en ligne ! Inscriptions ouvertes jusqu'au 15 du mois.</p><div class="p-post-meta"><span>131 réactions</span><span>45 commentaires</span><span>Il y a 4h</span></div></div>
+      <div class="p-post"><p class="p-post-txt">Qui aurait des recommandations de livres en arabe pour un niveau intermédiaire ?</p><div class="p-post-meta"><span>17 réactions</span><span>23 commentaires</span><span>Hier</span></div></div>`;
+  } else if(tab==='photos'){
+    c.innerHTML=`<p style="padding:24px 0;color:var(--text3);text-align:center;font-size:13px;">📷 12 photos — à venir</p>`;
+  } else if(tab==='amis'){
+    c.innerHTML=`<p style="padding:24px 0;color:var(--text3);text-align:center;font-size:13px;">👥 156 amis — à venir</p>`;
+  } else {
+    c.innerHTML=`
+      <div class="p-post"><p style="font-size:11px;color:var(--text3);margin-bottom:4px;">BIO</p><p class="p-post-txt">Étudiant en sciences islamiques | Passionné de langue arabe</p></div>
+      <div class="p-post"><p style="font-size:11px;color:var(--text3);margin-bottom:4px;">LOCALISATION</p><p class="p-post-txt">Lyon, France</p></div>
+      <div class="p-post"><p style="font-size:11px;color:var(--text3);margin-bottom:4px;">MEMBRE DEPUIS</p><p class="p-post-txt">Janvier 2024</p></div>`;
+  }
+}
+
+// ══════════════════════════════════════════
+// CATEGORY FILTER
+// ══════════════════════════════════════════
+function filterCat(btn){
+  document.querySelectorAll('.cats .tag').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  toast('🔍 '+btn.textContent.trim());
+}
+
+// ══════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast-el');
+  el.textContent=msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('show'),2600);
+}
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+function autoH(el){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
+
+// ══════════════════════════════════════════
+// CLOSE NOTIF ON OUTSIDE CLICK
+// ══════════════════════════════════════════
+document.addEventListener('click',e=>{
+  if(S.notifOpen&&!document.getElementById('notif-pnl').contains(e.target)&&!e.target.closest('.hdr-btn')){
+    S.notifOpen=false;
+    document.getElementById('notif-pnl').classList.remove('open');
+  }
+});
+
+// ══════════════════════════════════════════
+// INIT — animate progress bars
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded',()=>{
+  // Animate bars on screen switch
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const fills=e.target.querySelectorAll('.pfill[data-w]');
+        fills.forEach(f=>{
+          if(!f.style.width||f.style.width==='0px'){
+            f.style.width='0';
+            setTimeout(()=>{f.style.width=f.dataset.w;},200);
+          }
+        });
+      }
+    });
+  },{threshold:.1});
+  document.querySelectorAll('.screen').forEach(s=>observer.observe(s));
+  // Initial bars for visible screen
+  setTimeout(()=>{
+    document.querySelectorAll('#s-solidarite .pfill[data-w]').forEach(f=>{
+      f.style.width='0';
+      setTimeout(()=>{f.style.width=f.dataset.w;},300);
+    });
+  },400);
+});
+</script>
+</body>
+</html>
